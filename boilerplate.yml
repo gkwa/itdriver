@@ -22,3 +22,6 @@ hooks:
     - +x
     - .project_watchexec.sh
     - .project_rsync.sh
+
+skip_files:
+- path: ".git/**/*"
