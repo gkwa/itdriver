@@ -2,7 +2,7 @@
 set -e
 set -u
 usage() {
-    echo "Usage: $0 --user=<username> [--ip=<ip_address>] --source-dir=<source_directory> [--target-basedir=<target_base_directory>] [--dry-run]"
+    echo "Usage: $0 --user=<username> [--ip=<ip_address>] --source-dir=<source_directory> [--target-basedir=<target_base_directory>]"
     echo
     echo "Required parameters:"
     echo "  --user=<username>          SSH username"
@@ -11,13 +11,11 @@ usage() {
     echo "Optional parameters:"
     echo "  --ip=<ip_address>          IP address of the remote host (if not provided, the user will be prompted)"
     echo "  --target-basedir=<target_base_directory>  Base directory on the target host (default: empty string)"
-    echo "  --dry-run                  Perform a dry run without actually syncing files"
     exit 1
 }
 user="{{ .SSHUser }}"
 source_dir="{{ .ProjectPath }}"
 target_basedir="{{ .TargetProjectPath }}"
-dry_run=false
 for i in "$@"; do
     case $i in
     --user=*)
@@ -34,10 +32,6 @@ for i in "$@"; do
         ;;
     --target-basedir=*)
         target_basedir="${i#*=}"
-        shift
-        ;;
-    --dry-run)
-        dry_run=true
         shift
         ;;
     *)
@@ -58,5 +52,4 @@ watchexec --watch="${source_dir}" \
     --user="$user" \
     --ip="$ip" \
     --source-dir="${source_dir}" \
-    --target-basedir="${target_basedir}" \
-    ${dry_run:+--dry-run}
+    --target-basedir="${target_basedir}"
