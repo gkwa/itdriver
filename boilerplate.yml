@@ -1,0 +1,24 @@
+variables:
+- name: SSHUser
+  description: Enter the ssh username
+  type: string
+  default: root
+
+- name: ProjectPath
+  description: Enter the absolute path to the source to rsync
+  type: string
+  validations:
+  - required
+
+- name: TargetProjectPath
+  description: Path to project on remote host
+  type: string
+  default: '""'
+
+hooks:
+  after:
+  - command: chmod
+    args:
+    - +x
+    - .project_watchexec.sh
+    - .project_rsync.sh
