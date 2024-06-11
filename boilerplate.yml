@@ -24,4 +24,5 @@ hooks:
     - .project_rsync.sh
 
 skip_files:
+- path: ".git/"
 - path: ".git/**/*"
