@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
-
 set -e
-
 usage() {
-    echo "Usage: $0 --user=<username> --ip=<ip_address> --source-dir=<source_directory> [--target-basedir=<target_base_directory>]"
+    echo "Usage: $0 --user=<username> --ip=<ip_address> --source-dir=<source_directory> [--target-basedir=<target_base_directory>] [--dry-run]"
     echo
     echo "Required parameters:"
     echo "  --user=<username>          SSH username"
@@ -12,11 +10,11 @@ usage() {
     echo
     echo "Optional parameters:"
     echo "  --target-basedir=<target_base_directory>  Base directory on the target host (default: empty string)"
+    echo "  --dry-run                  Perform a dry run without actually syncing files"
     exit 1
 }
-
 target_basedir=""
-
+dry_run=false
 for i in "$@"; do
     case $i in
     --user=*)
@@ -35,30 +33,36 @@ for i in "$@"; do
         target_basedir="${i#*=}"
         shift
         ;;
+    --dry-run)
+        dry_run=true
+        shift
+        ;;
     *)
         echo "Unknown parameter passed: $i"
         usage
         ;;
     esac
 done
-
 if [[ -z ${user-} || -z ${ip-} || -z ${source_dir-} ]]; then
     echo "Error: --user, --ip, and --source-dir parameters are all required."
     usage
 fi
-
 if [[ ! -d ${source_dir} ]]; then
     echo "Error: Source directory '${source_dir}' does not exist or is not a directory."
     usage
 fi
-
-rsync \
-    --archive \
-    --compress \
-    --filter=". /Users/mtm/.rsync-filters.txt" \
-    --max-size=0.2m \
-    --no-links \
-    --prune-empty-dirs \
-    --rsh='ssh -o "UserKnownHostsFile=/dev/null"' \
-    --verbose \
-    "${source_dir}" "$user"@"$ip":"${target_basedir}"
+rsync_cmd=(
+    rsync
+    --archive
+    --compress
+    --filter=". /Users/mtm/.rsync-filters.txt"
+    --max-size=0.2m
+    --no-links
+    --prune-empty-dirs
+    --rsh='ssh -o "UserKnownHostsFile=/dev/null"'
+    --verbose
+)
+if $dry_run; then
+    rsync_cmd+=(--dry-run)
+fi
+"${rsync_cmd[@]}" "${source_dir}" "$user"@"$ip":"${target_basedir}"

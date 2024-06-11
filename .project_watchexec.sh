@@ -1,19 +1,43 @@
 #!/usr/bin/env bash
 set -e
 set -u
-
 usage() {
-    echo "Usage: $0 [--ip=<ip_address>]"
+    echo "Usage: $0 --user=<username> [--ip=<ip_address>] --source-dir=<source_directory> [--target-basedir=<target_base_directory>] [--dry-run]"
+    echo
+    echo "Required parameters:"
+    echo "  --user=<username>          SSH username"
+    echo "  --source-dir=<source_directory>  Source directory to sync"
     echo
     echo "Optional parameters:"
     echo "  --ip=<ip_address>          IP address of the remote host (if not provided, the user will be prompted)"
+    echo "  --target-basedir=<target_base_directory>  Base directory on the target host (default: empty string)"
+    echo "  --dry-run                  Perform a dry run without actually syncing files"
     exit 1
 }
-
+user="{{ .SSHUser }}"
+source_dir="{{ .ProjectPath }}"
+target_basedir="{{ .TargetProjectPath }}"
+dry_run=false
 for i in "$@"; do
     case $i in
+    --user=*)
+        user="${i#*=}"
+        shift
+        ;;
     --ip=*)
         ip="${i#*=}"
+        shift
+        ;;
+    --source-dir=*)
+        source_dir="${i#*=}"
+        shift
+        ;;
+    --target-basedir=*)
+        target_basedir="${i#*=}"
+        shift
+        ;;
+    --dry-run)
+        dry_run=true
         shift
         ;;
     *)
@@ -22,14 +46,17 @@ for i in "$@"; do
         ;;
     esac
 done
-
 if [[ -z ${ip-} ]]; then
     read -r -p "Enter the IP address: " ip
 fi
-
-watchexec --watch={{ .ProjectPath }} \
-    --user={{ .SSHUser }} \
+if [[ -z ${user-} || -z ${source_dir-} ]]; then
+    echo "Error: --user and --source-dir parameters are required."
+    usage
+fi
+watchexec --watch="${source_dir}" \
+    "${source_dir}"/.project_rsync.sh \
+    --user="$user" \
     --ip="$ip" \
-    --source-dir={{ .ProjectPath }} \
-    --target-basedir={{ .TargetProjectPath }} \
-    {{ .ProjectPath }}/.project_rsync.sh
+    --source-dir="${source_dir}" \
+    --target-basedir="${target_basedir}" \
+    ${dry_run:+--dry-run}
