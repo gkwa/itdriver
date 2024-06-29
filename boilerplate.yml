@@ -20,7 +20,7 @@ hooks:
   - command: bash
     args:
     - "-c"
-    - "touch /tmp/asdf.txt"
+    - touch asdf.txt
 
   - command: bash
     args:
