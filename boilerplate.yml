@@ -19,6 +19,7 @@ hooks:
   after:
   - command: bash
     args:
+    - "-c"
     - pwd >/tmp/1.txt
 
   - command: bash
