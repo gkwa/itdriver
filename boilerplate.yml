@@ -23,5 +23,6 @@ hooks:
     - "chmod +x .project_watchexec.sh .project_rsync.sh"
 
 skip_files:
+- path: README.md
 - path: ".git/"
 - path: ".git/**/*"
