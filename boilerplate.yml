@@ -20,6 +20,11 @@ hooks:
   - command: bash
     args:
     - "-c"
+    - "touch /tmp/asdf.txt"
+
+  - command: bash
+    args:
+    - "-c"
     - "chmod +x .project_watchexec.sh .project_rsync.sh"
 
 skip_files:
