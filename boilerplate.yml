@@ -17,11 +17,12 @@ variables:
 
 hooks:
   after:
-  - command: bash
+  - command: chmod
     dir: "{{ outputFolder }}"
     args:
-    - "-c"
-    - "chmod a+x .project_watchexec.sh .project_rsync.sh"
+    - "+x"
+    - .project_watchexec.sh
+    - .project_rsync.sh
 
 skip_files:
 - path: README.md
