@@ -18,16 +18,19 @@ variables:
 hooks:
   after:
   - command: bash
+    dir: "{{ outputFolder }}"
     args:
     - "-c"
     - pwd >/tmp/1.txt
 
   - command: bash
+    dir: "{{ outputFolder }}"
     args:
     - "-c"
     - touch asdf.txt
 
   - command: bash
+    dir: "{{ outputFolder }}"
     args:
     - "-c"
     - "chmod a+x .project_watchexec.sh .project_rsync.sh"
