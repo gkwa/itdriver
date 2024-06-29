@@ -17,11 +17,10 @@ variables:
 
 hooks:
   after:
-  - command: chmod
+  - command: bash
     args:
-    - +x
-    - .project_watchexec.sh
-    - .project_rsync.sh
+    - "-c"
+    - "chmod +x .project_watchexec.sh .project_rsync.sh"
 
 skip_files:
 - path: ".git/"
