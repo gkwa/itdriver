@@ -56,7 +56,7 @@ rsync_cmd=(
     rsync
     --archive
     --compress
-    --filter=". /Users/mtm/.rsync-filters.txt"
+    --filter=". ~/.rsync-filters.txt"
     --max-size=0.2m
     --no-links
     --prune-empty-dirs
