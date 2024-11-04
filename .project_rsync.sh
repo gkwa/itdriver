@@ -63,4 +63,5 @@ rsync_cmd=(
     --rsh='ssh -o "UserKnownHostsFile=/dev/null"'
     --verbose
 )
+
 "${rsync_cmd[@]}" "${source_dir}" "$user"@"$ip":"${target_basedir}"
