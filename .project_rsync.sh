@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+
 set -e
+
 usage() {
     echo "Usage: $0 --user=<username> --ip=<ip_address> --source-dir=<source_directory> [--target-basedir=<target_base_directory>]"
     echo
@@ -12,7 +14,9 @@ usage() {
     echo "  --target-basedir=<target_base_directory>  Base directory on the target host (default: empty string)"
     exit 1
 }
+
 target_basedir=""
+
 for i in "$@"; do
     case $i in
     --user=*)
@@ -37,14 +41,17 @@ for i in "$@"; do
         ;;
     esac
 done
+
 if [[ -z ${user-} || -z ${ip-} || -z ${source_dir-} ]]; then
     echo "Error: --user, --ip, and --source-dir parameters are all required."
     usage
 fi
+
 if [[ ! -d ${source_dir} ]]; then
     echo "Error: Source directory '${source_dir}' does not exist or is not a directory."
     usage
 fi
+
 rsync_cmd=(
     rsync
     --archive
