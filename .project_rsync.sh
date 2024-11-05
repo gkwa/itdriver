@@ -64,4 +64,8 @@ rsync_cmd=(
     --verbose
 )
 
+if [[ -f "$HOME/.rsync-filters.txt" ]]; then
+   rsync_cmd+=(--filter=". $HOME/.rsync-filters.txt")
+fi
+
 "${rsync_cmd[@]}" "${source_dir}" "$user"@"$ip":"${target_basedir}"
