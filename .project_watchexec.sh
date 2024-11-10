@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+
 set -e
 set -u
+
 usage() {
     echo "Usage: $0 --user=<username> [--ip=<ip_address>] --source-dir=<source_directory> [--target-basedir=<target_base_directory>]"
     echo
@@ -13,9 +15,11 @@ usage() {
     echo "  --target-basedir=<target_base_directory>  Base directory on the target host (default: empty string)"
     exit 1
 }
+
 user="{{ .SSHUser }}"
 source_dir="{{ .ProjectPath }}"
 target_basedir="{{ .TargetProjectPath }}"
+
 for i in "$@"; do
     case $i in
     --user=*)
@@ -40,13 +44,16 @@ for i in "$@"; do
         ;;
     esac
 done
+
 if [[ -z ${ip-} ]]; then
     read -r -p "Enter the IP address: " ip
 fi
+
 if [[ -z ${user-} || -z ${source_dir-} ]]; then
     echo "Error: --user and --source-dir parameters are required."
     usage
 fi
+
 watchexec --watch="${source_dir}" \
     "${source_dir}"/.project_rsync.sh \
     --user="$user" \
