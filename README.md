@@ -13,8 +13,6 @@ Create rsync script to rsync project to remote host.
 ## Usage
 
 ```bash
-
 boilerplate --template-url github.com/gkwa/itdriver --output-folder=. --var ProjectPath=$(pwd)
 ls -la .project_*.sh
-
 ```
