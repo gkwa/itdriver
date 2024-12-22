@@ -26,5 +26,6 @@ hooks:
 
 skip_files:
   - path: README.md
+  - path: .renovaterc.json
   - path: ".git/"
   - path: ".git/**/*"
