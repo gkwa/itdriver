@@ -9,7 +9,8 @@ variables:
     type: string
     validations:
       - required
-
+    default: "{{ outputFolder }}"
+  
   - name: TargetProjectPath
     description: Path to project on remote host
     type: string
