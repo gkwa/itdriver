@@ -26,7 +26,6 @@ hooks:
       dir: "{{ outputFolder }}"
 
 skip_files:
-  - path: justfile
   - path: README.md
   - path: .renovaterc.json
   - path: ".git/"
